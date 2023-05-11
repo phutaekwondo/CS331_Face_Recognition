@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 from deepface import DeepFace
-import math
+import utils
 import cv2
 
 class ArcFaceModel:
@@ -11,10 +11,13 @@ class ArcFaceModel:
         else:
             self.model = tf.keras.models.load_model(model_path)
         
-        self.threshold = 0.4
+        self.threshold = 0.8
         self.face_register = {}
     
     def register_face(self, name, image):
+        
+        image = utils.crop_face(image, utils.get_face_bb_opencv(image))
+
         embedding = self.predict(image)
         self.face_register[name] = embedding
 

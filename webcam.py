@@ -10,8 +10,12 @@ face_cropped = None
 arcface = ArcFaceModel()
 
 face_cuong = cv2.imread('img/cuong.jpg')
+face_homelander = cv2.imread('img/homelander.jpg')
+face_gus = cv2.imread('img/gus.jpg')
 
 arcface.register_face('cuong', face_cuong)
+arcface.register_face('yoru', face_homelander)
+arcface.register_face('gus', face_gus)
 
 while True:
     # with FPS
@@ -43,13 +47,17 @@ while True:
 
     #resize face_cropped to height
     if face_cropped is not None:
-        face_cropped = cv2.resize(face_cropped, (height, height))
 
         # get the name of the person
         name = arcface.recognize_face(face_cropped)
 
+        face_cropped = cv2.resize(face_cropped, (height, height))
+
         # draw the name of the person
-        cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        if name is not None and bb is not None:
+            print('name: ', name)
+            print('bb: ', bb)
+            cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     #concat frame and face_cropped
     frame = cv2.hconcat([frame, face_cropped])
