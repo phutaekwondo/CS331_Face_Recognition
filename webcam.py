@@ -1,10 +1,17 @@
 import utils
 import cv2
 import time
+from arcface import ArcFaceModel
 
 # initialize the camera
 cap = cv2.VideoCapture(0)
 face_cropped = None
+
+arcface = ArcFaceModel()
+
+face_cuong = cv2.imread('img/cuong.jpg')
+
+arcface.register_face('cuong', face_cuong)
 
 while True:
     # with FPS
@@ -37,6 +44,12 @@ while True:
     #resize face_cropped to height
     if face_cropped is not None:
         face_cropped = cv2.resize(face_cropped, (height, height))
+
+        # get the name of the person
+        name = arcface.recognize_face(face_cropped)
+
+        # draw the name of the person
+        cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     #concat frame and face_cropped
     frame = cv2.hconcat([frame, face_cropped])
