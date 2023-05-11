@@ -57,8 +57,6 @@ while True:
 
         # draw the name of the person
         if name is not None and bb is not None:
-            print('name: ', name)
-            print('bb: ', bb)
             cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     #concat frame and face_cropped
