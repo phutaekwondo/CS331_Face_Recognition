@@ -6,4 +6,4 @@ Run in terminal:
 
 `python .\webcam.py`
 
-![face detect demo](.\webcam-face-detect-demo.gif)
+![face detect demo](https://raw.githubusercontent.com/phutaekwondo/CS331_Face_Recognition/main/webcam-face-detect-demo.gif)
