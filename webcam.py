@@ -18,26 +18,16 @@ arcface.register_face('phu', face_phu)
 while True:
     # with FPS
     start_time = time.time()
-    # ret, frame = cap.read()
-    # if not ret: break
-    # frame = cv2.flip(frame, 1)
-    # frame = cv2.resize(frame, (640, 480))
-    # bb = utils.get_face_bb(frame)
-    # if bb is not None:
-    #     frame = utils.draw_bb_on_img(frame, bb, (0, 255, 0))
-    # cv2.putText(frame, "FPS: {:.2f}".format(1.0 / (time.time() - start_time)), (10, 30),
-    #             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-    # cv2.imshow("Frame", frame)
-    # if cv2.waitKey(1) & 0xFF == ord('q'): break
 
     # get the frame
     _, frame = cap.read()
 
     # get the bounding box
-    bb = utils.get_face_bb_opencv(frame)
+    bbs = utils.get_all_face_bbs_opencv(frame)
+    bb = utils.get_biggest_bb(bbs)
     # draw the bounding box on the frame
     if bb is not None:
-        frame = utils.draw_bb_on_img(frame, bb, (0, 255, 0))
+        frame = utils.draw_bbs_on_img(frame, bbs, (0, 255, 0))
         face_cropped = utils.crop_face(frame, bb)
 
     # get frame height
