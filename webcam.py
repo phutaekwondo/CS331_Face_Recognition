@@ -29,6 +29,8 @@ while True:
         face_cropped = cv2.resize(face_cropped, (height, height))
 
     #concat frame and face_cropped
+    if face_cropped == None:
+        face_cropped = np.zeros((height, height, 3), np.uint8)
     frame = cv2.hconcat([frame, face_cropped])
 
     #show the FPS
