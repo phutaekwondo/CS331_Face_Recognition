@@ -3,8 +3,17 @@ import tensorflow as tf
 import cv2
 
 # tf.debugging.set_log_device_placement(True)
-detector = MTCNN()
+mtcnn_detector = None
 opencv_face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+def mtcnn_init():
+    """
+    Initialize MTCNN
+    :return: MTCNN object
+    """
+    print('Initializing MTCNN...')
+    global mtcnn_detector 
+    mtcnn_detector = MTCNN() 
 
 def get_face_bb_opencv(img):
     """
@@ -27,8 +36,12 @@ def get_face_bb_mtcnn(img):
     :param img: image
     :return: bounding box of the face
     """
+
+    if mtcnn_detector is None:
+        mtcnn_init()
+
     # detect faces in the image
-    faces = detector.detect_faces(img)
+    faces = mtcnn_detector.detect_faces(img)
 
     if len (faces) <= 0: return None
     # extract the bounding box from the first face
