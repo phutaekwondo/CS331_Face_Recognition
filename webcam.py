@@ -25,10 +25,11 @@ while True:
     _, frame = cap.read()
 
     # get the bounding box
-    bb = utils.get_face_bb_opencv(frame)
+    bbs = utils.get_all_face_bbs_opencv(frame)
+    bb = utils.get_biggest_bb(bbs)
     # draw the bounding box on the frame
     if bb is not None:
-        frame = utils.draw_bb_on_img(frame, bb, (0, 255, 0))
+        frame = utils.draw_bbs_on_img(frame, bbs, (0, 255, 0))
         face_cropped = utils.crop_face(frame, bb)
 
     # get frame height

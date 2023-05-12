@@ -99,4 +99,15 @@ def draw_bb_on_img(img, bb, color):
     cv2.rectangle(img, (bb[0], bb[1]), (bb[2], bb[3]), color, 2)
     return img
 
+def draw_bbs_on_img(img, bbs, color):
+    """
+    Draw bounding boxes on the image
+    :param img: image
+    :param bbs: bounding boxes
+    :return: image with bounding boxes
+    """
+    for bb in bbs:
+        img = draw_bb_on_img(img, bb, color)
+    return img
+
 
