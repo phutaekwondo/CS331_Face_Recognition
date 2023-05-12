@@ -2,6 +2,7 @@ import utils
 import cv2
 import time
 from arcface import ArcFaceModel
+import numpy as np
 
 # initialize the camera
 cap = cv2.VideoCapture(0)
@@ -47,7 +48,7 @@ while True:
         #     cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
 
     #concat frame and face_cropped
-    if face_cropped == None:
+    if face_cropped is None:
         face_cropped = np.zeros((height, height, 3), np.uint8)
     frame = cv2.hconcat([frame, face_cropped])
 
