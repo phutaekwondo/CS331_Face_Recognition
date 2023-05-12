@@ -57,6 +57,8 @@ def get_face_bb_opencv(img):
     """
     # detect faces in the image
     face_bbs = get_all_face_bbs_opencv(img)
+    if len(face_bbs) <= 0: 
+        return None
     return get_biggest_bb(face_bbs)
 
 
