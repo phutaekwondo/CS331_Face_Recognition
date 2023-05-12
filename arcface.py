@@ -14,13 +14,16 @@ class ArcFaceModel:
         self.threshold = 0.6
         self.face_register = {}
     
-    def register_face(self, name, image):
+    def register_face(self, name, images):
         
         # if crop:
         #     image = utils.crop_face(image, utils.get_face_bb_opencv(image))
+        embeddings = []
+        for image in images:
+            embedding = self.predict(image)
+            embeddings.append(embedding)
 
-        embedding = self.predict(image)
-        self.face_register[name] = embedding
+        self.face_register[name] = embeddings
 
     def recognize_face(self, image):
         embedding = self.predict(image)
@@ -29,9 +32,15 @@ class ArcFaceModel:
         match_faces = {}
 
         for name in self.face_register.keys():
-            match, cosine_similarity = self.match(embedding, self.face_register[name])
-            if match:
-                match_faces[name] = cosine_similarity
+
+            highest_cosine_similarity = 0
+            for register_embedding in self.face_register[name]:
+                match, cosine_similarity = self.match(embedding, register_embedding)
+                
+                if match and cosine_similarity > highest_cosine_similarity:
+                    highest_cosine_similarity = cosine_similarity
+                
+            match_faces[name] = highest_cosine_similarity
         
         if len(match_faces) > 0:
             # return the name with the highest cosine similarity
@@ -58,7 +67,7 @@ class ArcFaceModel:
         except:
             cosine_similarity = 0
         
-        print('cosine similarity:', cosine_similarity)
+        # print('cosine similarity:', cosine_similarity)
 
         return cosine_similarity > self.threshold, cosine_similarity
     
