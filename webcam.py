@@ -10,13 +10,9 @@ face_cropped = None
 arcface = ArcFaceModel()
 
 face_cuong = cv2.imread('img/cuong.jpg')
-face_homelander = cv2.imread('img/homelander.jpg')
-face_gus = cv2.imread('img/gus.jpg')
 face_phu = cv2.imread('img/phu.jpg')
 
-arcface.register_face('cuong', face_cuong)
-arcface.register_face('yoru', face_homelander)
-arcface.register_face('gus', face_gus)
+arcface.register_face('cuong', face_cuong, True)
 arcface.register_face('phu', face_phu)
 
 while True:

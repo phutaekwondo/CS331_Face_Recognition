@@ -11,21 +11,32 @@ class ArcFaceModel:
         else:
             self.model = tf.keras.models.load_model(model_path)
         
-        self.threshold = 0.8
+        self.threshold = 0.6
         self.face_register = {}
     
-    def register_face(self, name, image):
+    def register_face(self, name, image, crop = False):
         
-        image = utils.crop_face(image, utils.get_face_bb_opencv(image))
+        if crop:
+            image = utils.crop_face(image, utils.get_face_bb_opencv(image))
 
         embedding = self.predict(image)
         self.face_register[name] = embedding
 
     def recognize_face(self, image):
         embedding = self.predict(image)
+
+        # key will be name, value will be cosine similarity
+        match_faces = {}
+
         for name in self.face_register.keys():
-            if self.match(embedding, self.face_register[name]):
-                return name
+            match, cosine_similarity = self.match(embedding, self.face_register[name])
+            if match:
+                match_faces[name] = cosine_similarity
+        
+        if len(match_faces) > 0:
+            # return the name with the highest cosine similarity
+            return max(match_faces, key=match_faces.get)
+
         return None
 
     def summary(self):
@@ -47,20 +58,20 @@ class ArcFaceModel:
         except:
             cosine_similarity = 0
         
-        print(cosine_similarity)
+        print('cosine similarity:', cosine_similarity)
 
-        return cosine_similarity > self.threshold
+        return cosine_similarity > self.threshold, cosine_similarity
     
-    def cosine(self, embedding1, embedding2):
+    # def cosine(self, embedding1, embedding2):
        
-        cosine = -1 * tf.keras.losses.cosine_similarity(embedding1, embedding2)
+    #     cosine = -1 * tf.keras.losses.cosine_similarity(embedding1, embedding2)
         
-        try:
-            cosine = cosine.numpy()[0]
-        except:
-            cosine = 0
+    #     try:
+    #         cosine = cosine.numpy()[0]
+    #     except:
+    #         cosine = 0
         
-        return cosine
+    #     return cosine
     
     def set_threshold(self, threshold):
         self.threshold = threshold
