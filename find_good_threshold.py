@@ -7,7 +7,6 @@ from arcface import ArcFaceModel
 cap = cv2.VideoCapture(0)
 face_cropped = None
 
-# initialize the arcface model
 arcface = ArcFaceModel()
 
 face_cuong = cv2.imread('img/cuong1.jpg')
@@ -16,6 +15,7 @@ face_phu = cv2.imread('img/phu.jpg')
 arcface.register_face('cuong', face_cuong)
 arcface.register_face('phu', face_phu)
 
+list_cuong = []
 while True:
     # with FPS
     start_time = time.time()
@@ -28,7 +28,7 @@ while True:
     bb = utils.get_biggest_bb(bbs)
     # draw the bounding box on the frame
     if bb is not None:
-        frame = utils.draw_bbs_and_recognition(arcface, frame, bbs, (0, 255, 0))
+        frame = utils.draw_bbs_on_img(frame, bbs, (0, 255, 0))
         face_cropped = utils.crop_face(frame, bb)
 
     # get frame height
@@ -38,13 +38,15 @@ while True:
     if face_cropped is not None:
 
         # get the name of the person
-        # name = arcface.recognize_face(face_cropped)
+        name = arcface.recognize_face(face_cropped)
 
         face_cropped = cv2.resize(face_cropped, (height, height))
 
         # draw the name of the person
-        # if name is not None and bb is not None:
-        #     cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+        if name is not None and bb is not None:
+            cv2.putText(frame, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+            list_cuong.append(face_cropped)
 
     #concat frame and face_cropped
     frame = cv2.hconcat([frame, face_cropped])
@@ -64,3 +66,7 @@ while True:
 cap.release()
 # close all the frames
 cv2.destroyAllWindows()
+
+
+threshold = arcface.find_good_threshold(list_cuong)
+print('good threshold:', threshold)

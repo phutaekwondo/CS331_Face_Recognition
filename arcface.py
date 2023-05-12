@@ -14,10 +14,10 @@ class ArcFaceModel:
         self.threshold = 0.6
         self.face_register = {}
     
-    def register_face(self, name, image, crop = False):
+    def register_face(self, name, image):
         
-        if crop:
-            image = utils.crop_face(image, utils.get_face_bb_opencv(image))
+        # if crop:
+        #     image = utils.crop_face(image, utils.get_face_bb_opencv(image))
 
         embedding = self.predict(image)
         self.face_register[name] = embedding
@@ -79,19 +79,7 @@ class ArcFaceModel:
     
     def find_good_threshold(self, list_image):
 
-        threshold = 0.5
-
-        # # Load LFW dataset
-        # import tensorflow_datasets as tfds
-        # lfw = tfds.load("lfw")
-
-        # # Calculate embeddings for LFW dataset
-        # lfw_embeddings = {}
-        # for name in lfw.keys():
-        #     lfw_embeddings[name] = []
-        #     for image in lfw[name]:
-        #         embedding = model.predict(cv2.resize(image, (112, 112)).astype(np.float32) / 255.0)
-        #         lfw_embeddings[name].append(embedding)
+        threshold = self.threshold
 
         # Calculate embeddings for input images
         input_embeddings = []
@@ -104,7 +92,7 @@ class ArcFaceModel:
         similarities = []
         for i in range(len(input_embeddings)):
             for j in range(i+1, len(input_embeddings)):
-                similarity = self.cosine(input_embeddings[i], input_embeddings[j])
+                _, similarity = self.match(input_embeddings[i], input_embeddings[j])
                 similarities.append(similarity)
         
         # Plot histogram of similarities
