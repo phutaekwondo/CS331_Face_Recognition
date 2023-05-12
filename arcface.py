@@ -67,7 +67,7 @@ class ArcFaceModel:
         except:
             cosine_similarity = 0
         
-        # print('cosine similarity:', cosine_similarity)
+        print('cosine similarity:', cosine_similarity)
 
         return cosine_similarity > self.threshold, cosine_similarity
     
