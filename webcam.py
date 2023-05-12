@@ -21,6 +21,7 @@ face_phu.append(cv2.imread('img/phu.jpg'))
 
 arcface.register_face('cuong', face_cuong)
 arcface.register_face('phu', face_phu)
+arcface.register_face('tu', face_tu)
 
 while True:
     # with FPS

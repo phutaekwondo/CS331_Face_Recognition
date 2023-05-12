@@ -11,7 +11,7 @@ class ArcFaceModel:
         else:
             self.model = tf.keras.models.load_model(model_path)
         
-        self.threshold = 0.6
+        self.threshold = 0.4
         self.face_register = {}
     
     def register_face(self, name, images):
