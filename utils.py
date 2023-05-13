@@ -112,4 +112,24 @@ def draw_bbs_on_img(img, bbs, color):
         img = draw_bb_on_img(img, bb, color)
     return img
 
+def draw_bbs_and_recognition(recognitor, img, bbs, color):
+    """
+    Draw bounding boxes on the image
+    :param img: image
+    :param bbs: bounding boxes
+    :return: image with bounding boxes
+    """
+    for bb in bbs:
+        img = draw_bb_on_img(img, bb, color)
+
+        # get faces cropped
+        face_cropped = crop_face(img, bb)
+
+        # get name of the face
+        name = recognitor.recognize_face(face_cropped)
+
+        if name is not None and bb is not None:
+            cv2.putText(img, name, (bb[0], bb[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+
+    return img
 
