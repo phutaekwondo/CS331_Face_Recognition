@@ -14,14 +14,18 @@ arcface = ArcFaceModel()
 face_cuong = []
 face_phu = []
 face_tu = []
+face_huy = []
 
 face_cuong.append(cv2.imread('img/cuong1.jpg'))
 face_phu.append(cv2.imread('img/phu.jpg'))
 face_tu.append(cv2.imread('img/tu.jpg'))
+face_huy.append(cv2.imread('img/huy1.jpg'))
+face_huy.append(cv2.imread('img/huy2.jpg'))
 
 arcface.register_face('cuong', face_cuong)
 arcface.register_face('phu', face_phu)
 arcface.register_face('tu', face_tu)
+arcface.register_face('huy', face_huy)
 
 while True:
     # with FPS
